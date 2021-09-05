@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+        crossorigin="anonymous"></script>
+        <style>
+           
+        body{
+            
+            background-image: url(./book.jpg);
+            background-repeat: no-repeat;
+            background-attachment: fixed;  
+            background-size: 100% 100%;
+        }
+        header {
+ 
+  text-align: center;
+  background: #1abc9c;
+  color: white;
+  font-size: 40px;
+  height:100px;
+  padding:30px;
+  background-image: linear-gradient(to right top, #64274a, #63365c, #61446b,
+   #5e5177, #5d5e80, #5a6787, #5a708c, #5b7990, #5a8193, #5b8894, #608f94, #689693);
+}
+#b_name{
+    margin-left:70px;
+    height:50px;
+    padding-left: 130px;
+}
+.btn{
+    margin-left:180px;
+    height:40px;
+    width:100px;
+    padding:5px;
+    margin-top:10px;
+}
+#displaybook{
+    background-color: #315178;
+}
+    
+
+        </style>
+
+</head>
+
+<body>
+    <header class="page-header">
+        <h1>BOOK LIBRARY</h1>
+    </header>
+    
+
+    <div class="container">
+
+        <div class="row mt-5">
+            <div class="col-lg-4"></div>
+            <div class="col-lg-4 col-sm-12 col-m-12 ">
+                <input type="text" name="" id="b_name" placeholder="Enter book name">
+                <button class="btn btn-warning" onclick="getBookDetails()">search</button>
+            </div>
+            <div class="col-lg-4 col-sm-12 col-m-12"></div>
+        </div>
+
+        <div class="container">
+            <div class="row my-3 ">
+                <div class="col-lg-4"></div>
+                <div class="col-lg-4  col-sm-12 col-m-12 ">
+                    <div class="text-center" id="search_head"></div>
+                    <div class="flex-three" id="displaybook"></div>
+                </div>
+                <div class="col-lg-4"></div>
+
+            </div>
+        </div>
+
+</body>
+<script>
+    function listBooks(data) {
+        search_head.innerHTML = `<h5 class="text-white">Serach related <b>${b_name.value}</b> books are:- </h5>`;
+        let html_data = "";
+        if (b_name.value == " ") {
+            alert("Enter the name of the Book");
+        } else {
+            for (let i = 0; i < data.items.length; i++) {
+
+                html_data += `<div class="card p-4" style=" margin-left:60px; margin-top:20px;
+                 width: 20rem; align-items:center; background-color:#343178">
+  <img src="${data.items[i].volumeInfo.imageLinks.thumbnail}"  alt="...">
+  <div class="card-body" >
+    <h3 class="card-title" style="font-family:monotype corsiva; color:#9aa317;">  ${data.items[i].volumeInfo.title}</h5>
+   
+  </div>
+  <ul class="nav " >
+   <li class="list-group-item" style="font-family:monotype corsiva;">Authors : ${data.items[i].volumeInfo.authors}</li>
+    <li class="list-group-item" style="font-family:monotype corsiva;">Publisher : ${data.items[i].volumeInfo.publisher}</li>
+    <li class="list-group-item"style=" font-family:monotype corsiva; ">Published Date : ${data.items[i].volumeInfo.publishedDate}</li>
+    <li class="list-group-item" style="font-family:monotype corsiva;">Category : ${data.items[i].volumeInfo.categories}</li>
+  </ul>
+  
+</div>`
+
+
+            }
+
+        } displaybook.innerHTML = html_data;
+
+    }
+
+    function getBookDetails() {
+        let bookname = b_name.value;
+
+        fetch(`https://www.googleapis.com/books/v1/volumes?q=${bookname}`).then(book => book.json()).then(data => listBooks(data))
+
+    }
+
+</script>
+
+</html>
